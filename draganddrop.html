@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <title>Drag and Drop Page</title>
+    <style>
+       .div-all {
+            border: solid  rgb(63,63,63);
+            border-width: 2px;
+            border-radius: 10px;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width:860px;
+            height: 600px;
+        }
+
+        .header{
+            margin-bottom: 25px;
+            text-align:center;
+            font-size: 20px;
+        }
+
+        .draggable{
+            width: 80px;
+            border: 1px solid black;
+            float:left;
+            margin-right: 10px;
+            margin-left: 5px;
+        }
+
+        .draggable img {
+            color: black;
+            display: block;
+            padding: 12px;
+            text-decoration: none;
+        }
+
+        #parent {
+            width: 900px;
+            overflow: hidden; /* will contain if #first is longer than #second */
+            margin-bottom: 10px;
+        }
+       
+        #droppable {
+            overflow: hidden; 
+            width: 750px;
+            height:530px;
+            border: 1px solid black; 
+        }
+
+        .container {
+            position: relative;
+            font-family: Arial;
+        }
+
+        .text-block {
+            position: absolute;
+            bottom: 20px;
+            top:30px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .text-block-circle {
+            position: absolute;
+            bottom: 20px;
+            top:30px;
+            padding-left: 25px;
+            padding-right: 30px;
+        }
+
+        .text-block-triangle {
+            position: absolute;
+            bottom: 20px;
+            top:50px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .cloned{
+            width:100px;
+            height:100px;
+            opacity:0.8;
+        }
+
+        .cloned-triangle{
+            width:120px;
+            height:100px;
+            opacity:0.8;
+        }
+
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" ></script>
+    <script>
+
+        var circlecount = 1;
+        var squarecount = 1;
+        var arrowcount = 1;
+        var trianglecount = 1;
+
+        $(function() {
+            $(".container").draggable({ 
+            revert: "invalid",
+            helper: "clone" 
+            });   
+            $("#droppable").droppable({
+                activeClass: "ui-state-default",
+                hoverClass: "ui-state-hover",
+                drop: function(event, ui) {
+                    var draggableId = ui.draggable.attr("id");
+                    var newClone = $(ui.helper).clone();
+                    $(newClone).draggable({helper:'clone'}).attr("id",draggableId+circlecount);
+                    newClone.find('#textp').html("");
+
+                    if(draggableId.match(/circle/g)) {
+                        newClone.find('#drag1').addClass('cloned');
+                        var htmlTag =  "<div id='figtext' class='text-block-circle'><p id='textp'>Circle" + circlecount + "</p></div>" ;
+                        circlecount++;
+                        newClone.append(htmlTag);
+                    } else if(draggableId.match(/square/g)) {
+                        newClone.find('#drag2').addClass('cloned');
+                        var htmlTag =  "<div id='figtext' class='text-block'><p id='textp'>Square" + squarecount + "</p></div>" ;
+                        squarecount++;
+                        newClone.append(htmlTag); 
+                    } else if(draggableId.match(/triangle/g)) {
+                        newClone.find('#drag3').addClass('cloned-triangle');
+                        var htmlTag =  "<div id='figtext' class='text-block-triangle'><p id='textp'>Triangle" + trianglecount + "</p></div>" ;
+                        trianglecount++;
+                        newClone.append(htmlTag);
+                    } else {
+                        newClone.find('#drag4').addClass('cloned');
+                        var htmlTag =  "<div id='figtext' class='text-block'><p id='textp'>Arrow" + arrowcount + "</p></div>" ;
+                        arrowcount++;
+                        newClone.append(htmlTag);
+                    }
+                   
+                    $(this).after(newClone);
+                }
+            });
+        });
+    </script>       
+    
+</head>
+<body>
+    
+   
+    <div class="div-all"> 
+        <header class="header">Drag and Drop Control Palette HTML Driver</header>
+        <hr/>
+        <div id="parent">
+        <div class="draggable">
+            
+            <div class="container" draggable="true" id="circle">
+                <img id="drag1" src="circle.gif" width="50" height="50">
+            </div>
+            <div class="container" draggable="true" id="square">
+                <img id="drag2" src="square.gif" width="50" height="50">
+            </div>
+            <div class="container" draggable="true" id="triangle">
+                <img id="drag3" src="triangle.gif" width="50" height="50">
+            </div>
+            <div class="container" draggable="true" id="arrow">
+                <img id="drag4" src="arrow.gif" width="50" height="50">
+            </div>
+            
+         </div>
+        <div id="droppable">
+
+        </div>
+            
+        </div>
+    </div>
+</body>
+</html>
